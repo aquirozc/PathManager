@@ -25,8 +25,6 @@
 #define LOCAL_SUBKEY L"Environment"
 #define LOCAL_TYPE REG_SZ
 
-#define BUFFER_SIZE 16383
-
 int readPath(wchar_t* buffer, int isGlobal) {
 
     int error = 0;

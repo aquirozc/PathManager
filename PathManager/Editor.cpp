@@ -11,8 +11,6 @@
 #include <wchar.h>
 #include "PathManager.h"
 
-#define BUFFER_SIZE 16383
-
 wchar_t* appendDirToPath(wchar_t* path, wchar_t* dir){
 	
 	size_t plen = wcslen(path);
@@ -49,7 +47,7 @@ wchar_t* removeDirFromPath(wchar_t* path, wchar_t* dir){
 
 		token = wcstok_s(NULL, L";", &ctx);
 
-		if(token != 0){
+		if(token != NULL){
 			wcsncpy_s(res + offset, BUFFER_SIZE, L";", 1);
 			offset = offset + 1;
 		}

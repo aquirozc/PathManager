@@ -74,6 +74,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Editor.cpp" />
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="PathManager.cpp" />
   </ItemGroup>
