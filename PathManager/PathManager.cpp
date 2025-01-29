@@ -12,6 +12,7 @@
 #define SCOPE_GLOBAL 2;
 
 int printHelp();
+int unimplemented();
 
 int _tmain(int argc, _TCHAR* argv[]){
 
@@ -19,16 +20,16 @@ int _tmain(int argc, _TCHAR* argv[]){
 		return printHelp();
 	}
 
-	LPWSTR* args = CommandLineToArgvW(GetCommandLineW(), &argc);
 	wchar_t path[BUFFER_SIZE];
 	wchar_t pwd[BUFFER_SIZE];
 	int task = 0;
 	int scope = 0;
+	LPWSTR* args = CommandLineToArgvW(GetCommandLineW(), &argc);
 	GetCurrentDirectoryW(BUFFER_SIZE, pwd);
 
 	while (--argc > 0) {
 	
-		wchar_t* arg = *(++args);
+		wchar_t* arg = toLowerCopy(*(++args));
 
 		if(!wcscmp(arg, L"/add")){
 
@@ -92,6 +93,7 @@ int _tmain(int argc, _TCHAR* argv[]){
 				}
 
 				task = TASK_APPEND;
+				return unimplemented();
 
 			}else if(!wcscmp(key, L"/remove-dir")){
 
@@ -101,6 +103,7 @@ int _tmain(int argc, _TCHAR* argv[]){
 				}
 
 				task = TASK_DELETE;
+				return unimplemented();
 		
 			}else{
 				wprintf(L"ERROR_BAD_WIDE_ARGUMENT");
@@ -151,4 +154,9 @@ int printHelp(){
               << "\t/?\t\tDisplay help manual page.\n";
 
 	  return 0;
+}
+
+int unimplemented(){
+	wprintf(L"ERROR_FLAG_NOT_IMPLEMENTED");
+	return 4;
 }

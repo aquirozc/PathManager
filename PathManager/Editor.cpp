@@ -39,7 +39,11 @@ wchar_t* removeDirFromPath(wchar_t* path, wchar_t* dir){
 	
 	while (token){
 
-		if(wcscmp(token,dir) != 0){
+		if(wcscmp(token,dir)){
+			if(offset){
+				wcsncpy_s(res + offset, BUFFER_SIZE, L";", 1);
+				offset = offset + 1;
+			}
 			tlen = wcslen(token);
 			wcsncpy_s(res + offset, BUFFER_SIZE, token, tlen);
 			offset = offset + tlen;
@@ -47,13 +51,24 @@ wchar_t* removeDirFromPath(wchar_t* path, wchar_t* dir){
 
 		token = wcstok_s(NULL, L";", &ctx);
 
-		if(token != NULL){
-			wcsncpy_s(res + offset, BUFFER_SIZE, L";", 1);
-			offset = offset + 1;
-		}
-
     }
+
+	wcsncpy_s(res + offset, BUFFER_SIZE, L"\0\0", 2);
 
 	return res;
 
+}
+
+wchar_t* toLowerCopy(wchar_t * input){
+	size_t len = wcslen(input);
+	size_t offset = len;
+	wchar_t* output = new wchar_t[len+1];
+
+	while (len-- > 0){
+		*(output++) = towlower(*(input++)); 
+	}
+
+	*output = L'\0';
+
+	return output-offset;
 }
