@@ -130,14 +130,14 @@ int _tmain(int argc, _TCHAR* argv[]){
 		readPath(path,(--scope));
 		writePath(removeDirFromPath(path,pwd),scope);
 	}
-
-	SendMessageTimeoutW(HWND_BROADCAST, WM_SETTINGCHANGE, NULL, NULL, SMTO_ABORTIFHUNG, 20000, NULL);
-
+	
+	SendMessageTimeoutW(HWND_BROADCAST, WM_SETTINGCHANGE, NULL, (LPARAM) L"Environment", SMTO_BLOCK, 20000, NULL);
+	
 	return 0;
 }
 
 int printHelp(){
-	  std::cout << "Path Manager for Windows\n"
+	  std::cout << "Path Manager for Windows (BETA)\n"
               << "Version: Milestone 1\n\n"
               << "PathManager.exe {/Add | /Remove} {/User | /System}\n"
               << "PathManager.exe {/Add-Dir:dir_to_include | /Remove-Dir:dir_to_exclude} \n"
