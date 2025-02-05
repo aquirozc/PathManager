@@ -1,8 +1,10 @@
 Debug
 Release
 ipch
+x64
 PathManager.suo
 PathManager.sdf
 PathManager.opensdf
 PathManager/Debug
 PathManager/Release
+PathManager/x64

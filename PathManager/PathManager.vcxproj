@@ -76,6 +76,7 @@
   <ItemGroup>
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="Environment.cpp" />
+    <ClCompile Include="File.cpp" />
     <ClCompile Include="PathManager.cpp" />
   </ItemGroup>
   <ItemGroup>

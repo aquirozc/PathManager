@@ -25,11 +25,10 @@
 #define LOCAL_SUBKEY L"Environment"
 #define LOCAL_TYPE REG_SZ
 
-int readPath(wchar_t* buffer, int isGlobal) {
-
+int ReadPathValueW(wchar_t* buffer, int isGlobal) {
     int error = 0;
 
-	DWORD size = 16383;
+	DWORD size = BUFFER_SIZE;
     HKEY hkey = LOCAL_HKEY;
     LPCWSTR skey = LOCAL_SUBKEY;
     HKEY hkResult;
@@ -55,8 +54,7 @@ int readPath(wchar_t* buffer, int isGlobal) {
     return error;
 }
 
-int writePath(wchar_t* buffer, int isGlobal) {
-
+int WritePathValueW(wchar_t* buffer, int isGlobal) {
     int error = 0;
 
 	DWORD size = (wcslen(buffer) * 2) + 4;

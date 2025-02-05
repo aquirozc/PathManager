@@ -11,13 +11,12 @@
 #define SCOPE_LOCAL 1;
 #define SCOPE_GLOBAL 2;
 
-int printHelp();
-int unimplemented();
+int PrintHelp();
 
 int _tmain(int argc, _TCHAR* argv[]){
 
 	if(argc==1){
-		return printHelp();
+		return PrintHelp();
 	}
 
 	wchar_t path[BUFFER_SIZE];
@@ -29,7 +28,8 @@ int _tmain(int argc, _TCHAR* argv[]){
 
 	while (--argc > 0) {
 	
-		wchar_t* arg = toLowerCopy(*(++args));
+		wchar_t* argup = *(++args);
+		wchar_t* arg = CopyToLowerCase(argup);
 
 		if(!wcscmp(arg, L"/add")){
 
@@ -83,7 +83,7 @@ int _tmain(int argc, _TCHAR* argv[]){
 			wchar_t* value = new wchar_t[value_size];
 
 			wcsncpy_s(key, key_size, arg, key_size-1);
-			wcsncpy_s(value, value_size, arg + key_size, value_size - 1);
+			wcsncpy_s(value, value_size, argup + key_size, value_size - 1);
 
 			if(!wcscmp(key, L"/add-dir")){
 
@@ -92,8 +92,11 @@ int _tmain(int argc, _TCHAR* argv[]){
 					return 4;
 				}
 
+				if(!GetDirFullPathW(value,pwd)){
+					wprintf(L"ERROR_FILE_NOT_FOUND");
+				}
+
 				task = TASK_APPEND;
-				return unimplemented();
 
 			}else if(!wcscmp(key, L"/remove-dir")){
 
@@ -102,8 +105,11 @@ int _tmain(int argc, _TCHAR* argv[]){
 					return 4;
 				}
 
+				if(!GetDirFullPathW(value,pwd)){
+					wprintf(L"ERROR_FILE_NOT_FOUND");
+				}
+
 				task = TASK_DELETE;
-				return unimplemented();
 		
 			}else{
 				wprintf(L"ERROR_BAD_WIDE_ARGUMENT");
@@ -124,11 +130,11 @@ int _tmain(int argc, _TCHAR* argv[]){
 	}
 
 	if(!(--task)){
-		readPath(path,(--scope));
-		writePath(appendDirToPath(path,pwd),scope);
+		ReadPathValueW(path,(--scope));
+		WritePathValueW(AppendDirToPathW(path,pwd),scope);
 	}else{
-		readPath(path,(--scope));
-		writePath(removeDirFromPath(path,pwd),scope);
+		ReadPathValueW(path,(--scope));
+		WritePathValueW(RemoveDirFromPathW(path,pwd),scope);
 	}
 	
 	SendMessageTimeoutW(HWND_BROADCAST, WM_SETTINGCHANGE, NULL, (LPARAM) L"Environment", SMTO_BLOCK, 20000, NULL);
@@ -136,7 +142,7 @@ int _tmain(int argc, _TCHAR* argv[]){
 	return 0;
 }
 
-int printHelp(){
+int PrintHelp(){
 	  std::cout << "Path Manager for Windows (BETA)\n"
               << "Version: Milestone 1\n\n"
               << "PathManager.exe {/Add | /Remove} {/User | /System}\n"
@@ -147,16 +153,15 @@ int printHelp(){
               << "COMMANDS:\n\n"
               << "\t/Add\t\tAppends current directory (aka PWD) to the\n"
               << "\t\t\tend of the path environment variable.\n\n"
+			   << "\t/Add-Dir\tAppends the specified directory to the\n"
+              << "\t\t\tend of the path environment variable.\n\n"
               << "\t/Remove\t\tRemoves current directory (aka PWD) from\n"
+              << "\t\t\tthe path environment variable.\n\n"
+			  << "\t/Remove-Dir\tRemoves the specified directory from\n"
               << "\t\t\tthe path environment variable.\n\n"
               << "\t/User\t\tTargets local path environment variable.\n\n"
               << "\t/System\t\tTargets global path environment variable.\n\n"
               << "\t/?\t\tDisplay help manual page.\n";
 
 	  return 0;
-}
-
-int unimplemented(){
-	wprintf(L"ERROR_FLAG_NOT_IMPLEMENTED");
-	return 4;
 }
